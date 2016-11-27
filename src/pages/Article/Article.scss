@@ -1,0 +1,44 @@
+.Article{
+	max-width: 1280px;
+	margin:0 auto;
+	.a-head{
+		font-size: 24px;
+		font-size:1.5rem;
+		color: rgba(0,0,0,.7);
+		padding: 67px 0 60px 40px;
+		padding: 4.2rem 0 3.75rem 2.5rem;
+	}
+	.a-body{
+		background:#FFF;
+		.a-content{
+			max-width:760px;
+			margin:0 auto;
+			padding:64px 0 128px;
+			.a-item{
+				border-bottom: 1px solid #e9e9e9;
+				.left-list{
+					padding:1.25rem 2rem 0 0;
+				}
+				.right-content{
+					line-height:1.8;
+					padding:1.56rem 0 2.5rem;
+					flex-grow:1;
+					.rc-title{
+						font-size:1.5rem;
+						padding-bottom: 0.625rem;
+						line-height:1.33;
+						color:#4F4F4F;
+					}
+					.rc-time{
+						font-size:14px;
+						color:#757575;
+					}
+					.rc-content{
+						font-size:14px;
+						color:#6b6b6b;
+					}
+				}
+			}
+		}
+	}
+}

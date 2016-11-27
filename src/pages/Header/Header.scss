@@ -1,0 +1,73 @@
+.header{
+	overflow: hidden;
+	// background:#ea4335;
+	// font-family: "Roboto Mono",'Microsoft Yahei';
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+	transition:all 2s;
+	position:relative;
+	.header-bar{
+		max-width: 1680px;
+		margin:0 auto;
+		padding:0 40px;
+		flex-wrap:wrap;
+		.left-wrap{
+			flex-shrink:0;
+		}
+		.left-item{
+			position:relative;
+			padding:20px 12px;
+			font-size: 20px;
+			color:#FFF;
+			transition:all .1s;
+			cursor:pointer;
+			line-height: 22px;
+		}
+		.title-dot{
+			position:relative;
+			&:after{
+				position:absolute;
+				content:'.';
+				left:-12px;
+				top:-5px;
+				opacity:.4;
+			}
+		}
+		.title-return{
+			position:relative;
+			&:after{
+				position:absolute;
+				content:'¬';
+				left: 108px;
+    			top: -23px;
+				opacity:.4;
+			}
+		}
+		.h-item{
+			overflow:hidden;
+			padding:20px 12px;
+			font-weight: 700;
+			font-size: 14px;
+			color:#FFF;
+			transition:all .1s;
+			cursor:pointer;
+			line-height: 22px;
+			height:64px;
+			// border-bottom: 2px solid #FFF;
+			&:hover{
+				border-bottom:3px solid rgba(255,255,255,0.5)
+			}
+		}
+	}
+}
+
+.draw-header{
+	cursor: pointer;
+    font-size: 24px;
+    color: #FFF;
+    line-height: 64px;
+    font-weight: 300;
+    background-color: #34a853;
+    padding-left: 24px;
+    margin-bottom: 8px;
+    // box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+}
