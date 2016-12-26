@@ -3,7 +3,7 @@ import koa from 'koa'
 import router from 'koa-router'
 import path from 'path'
 import controllers from './controllers';
-import models from './models';
+// import models from './models';
 import config from './config';
 import bodyParer from 'koa-bodyparser';
 import cors from 'koa-cors'
@@ -25,6 +25,7 @@ const app = koa();
     global.F = {}; //F for function
     global.G = {};
     global.U = {}; //U for util
+    global.log = function(data){console.log(data)}
 
 
     //C-配置文件 F-内置函数 M-数据库类
@@ -42,7 +43,7 @@ global.U = util;
 
 
 //===================初始化model
-models()
+// models()
 
 
 

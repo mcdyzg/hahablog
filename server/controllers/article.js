@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 
 function article(router){
 	router.post('/article/insert',function*(next){
@@ -7,38 +8,22 @@ function article(router){
 			return yield next;
 		}
 
-		yield M.article.create(this.request.body,function(err, obj){
-			if(err) {
-				console.log('错了')
-				return;
-			}
-			console.log(obj)
-		})
+		// 写入docs文件夹
+		fs.writeFileSync(path.join(C.category,this.request.body.category,this.request.body.title+'.md'),this.request.body.content);
 
-		yield M.article.find({category:'Web'},function(err, obj){
-			if(err){
-				console.log('出错')
-			}
-			console.log(obj)
-		})
 		this.status = 200;
-		console.log('finash')
 		this.body = {
 			status:'ok'
 		}
 		// yield next;
 	}).get('/category/find',function*(next){
-		fs.readdirSync(C.category,function(err,files){
-			if(err){
-				console.log('出错了')
-				return;
-			}
-		}).forEach(function(name){
+		const cate = [];
+		fs.readdirSync(C.category).forEach(function(name){
 			if (path.extname(name) === '') {
-	      	  	console.log(name)
+	      	  	cate.push(name)
 	      	}
 		})
-		// this.body = yield M.article.find();
+		this.body = cate
 	})
 } 
 export default article;

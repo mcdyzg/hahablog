@@ -42,7 +42,7 @@ export default class Article extends React.Component {
 									2016.10.28 | mcdyzg
 								</div>
 								<div className='rc-content'>
-									dddddddddddddddddddddddddd
+									111111111
 								</div>
 							</div>
 						</div>
