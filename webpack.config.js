@@ -1,66 +1,69 @@
-var webpack = require('webpack')
-var path = require('path')
-var HtmlwebpackPlugin = require('html-webpack-plugin');
-var OpenBrowserPlugin = require('open-browser-webpack-plugin')
-var autoprefixer = require('autoprefixer');
+const webpack = require('webpack');
+const OpenBrowserPlugin = require('open-browser-webpack-plugin')
 
-var nodeModulesPath = path.resolve(__dirname, 'node_modules');
+const config = {
+    devtool: 'eval-source-map', //开发环境使用;线上环境请禁用
+    entry: {
+        app:__dirname + '/src/app/app.js',
+        // app2: __dirname + '/src/app/app2.js',     // 多个入口文件打开本选项。
+        vendor:['react','react-dom','react-router']
+    },
+    output: {
+        path: __dirname + '/dist',
+        filename: '[name].js'
+    },
 
+    devServer: {
+        contentBase: './test',      //本地服务器所加载的页面所在的目录
+        inline: true,               //设置为true，当源文件改变时会自动刷新页面
+        port: 8081,                 //设置默认监听端口，如果省略，默认为8080
+        historyApiFallback: true,   //在开发单页应用时非常有用，它依赖于HTML5 history API，如果设置为true，所有的跳转将指向index.html
+        colors: true,               //设置为true，使终端输出的文件为彩色的
+        hot: true,                  //是否热部署
+        quiet: false                 //让dev server处于静默的状态启动
+    },
 
-module.exports = {
-	devServer: {
-	    historyApiFallback: true,
-	    hot: true,
-	    inline: true,
-	    progress: true,
-	    contentBase: './',
-	    port: 8080
-	},
-	entry:{
-		app:[
-			'webpack/hot/dev-server',
-			'webpack-dev-server/client?http://localhost:8080',
-			'./src/app/app'
-		],
-		vendor:['react','react-dom']
-	},
-	output:{
-		path:'dist',
-		filename:'[name].js'
-	},
-	plugins:[
-		new webpack.HotModuleReplacementPlugin(),
-		// 使用了此插件，那么就不会打开根目录下的index.html，而是新生成一个html，但是可以通过指定模板来引用已存在的html
-		new HtmlwebpackPlugin({
-	      	title: 'Webpack-demos',
-	      	template: './index.html',
-	      	//默认把入口的js加载进html的script标签上
-	      	// chunks: ['vendor','app'],
-	      	filename: 'index.html'
-	    }),
-		new OpenBrowserPlugin({ url: 'http://localhost:8080' }),
-		new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'vendor.js')
-	],
-	module:{
-		loaders: [
-	      	{
-		        test: /\.(js|jsx)$/,
-		        loaders: ['babel'],
-		        exclude: [nodeModulesPath]
-		    },
-		    {
-		        test: /\.scss$/,
-		        loader: 'style!css!postcss-loader!sass',
-		        include: [path.resolve(__dirname, "src")],
-		        exclude: [nodeModulesPath]
-		    },
-		    {
-		        test: /\.css$/,
-		        loader: 'style!css!postcss-loader',
-		        include: [path.resolve(__dirname, 'src')],
-		        exclude: [nodeModulesPath]
-		    }
-	    ]
-	},
-	postcss: [ autoprefixer({ browsers: ['> 5%'] }) ],
-}
+    module: {
+        loaders: [
+            {
+                test: /\.js[x]?$/,
+                exclude: /node_modules/,
+                loader: 'babel'
+            },
+            {
+                test: /\.css$/,
+                //loader: 'style!css?modules!postcss'
+                loader: 'style!css!postcss'
+            },
+            {
+                test: /\.scss$/,
+                //loader: 'style!css?modules!sass!postcss'
+                loader: 'style!css!sass!postcss'
+            },
+            {
+                test: /\.(png|jpg)$/,
+                //loader: 'style!css?modules!sass!postcss'
+                loader: 'url-loader?limit=8192'
+            }
+        ]
+    },
+
+    postcss: [
+        require('autoprefixer')//调用autoprefixer插件
+    ],
+    plugins: [
+        new OpenBrowserPlugin({ url: 'http://localhost:8081' }), //打包完成后自动打开浏览器
+        new webpack.HotModuleReplacementPlugin(),           //热加载插件
+        new webpack.NoErrorsPlugin(),                       //允许错误不打断程序
+        new webpack.DefinePlugin({
+          __LOCAL__: true,                                  // 本地环境
+          __PRO__:   false                                  // 生产环境
+        }),
+        new webpack.optimize.CommonsChunkPlugin(            //将公共模块打包
+            /* chunkName= */'vendor', 
+            /* filename= */'vendor.js'
+        ),
+    ]
+};
+
+module.exports = config;
