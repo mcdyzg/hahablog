@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route,Redirect,IndexRoute} from 'react-router'
+import {Route,Redirect,IndexRoute,IndexRedirect} from 'react-router'
 import App from '../pages/App'
 import Article from '../pages/Article'
 import Admin from '../pages/Admin'
@@ -8,9 +8,8 @@ import FontEnd from '../pages/FontEnd'
 
 const AppRoutes = (
 	<Route path='/' component={App}>
-		<IndexRoute component={FontEnd}/>
+		<IndexRedirect to="/article" />
 		<Route path='fontend' component={FontEnd}>
-			<IndexRoute component={Article}/>
 			<Route path='/article' component={Article} />
 		</Route>
 		<Route path='admin' component={Admin} />

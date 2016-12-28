@@ -16,8 +16,10 @@ export default class Login extends React.Component {
 	render() {
 		let t = this;
 		return (
-			<div className='Login'>
-				asdfsdf
+			<div className='login flex-h ai-center' style={{minHeight:$(window).height()+'px'}}>
+				<div className='login-wrap'>
+					afsdf
+				</div>
 			</div>
 		);
 	}
