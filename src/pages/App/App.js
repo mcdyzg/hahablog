@@ -24,7 +24,6 @@ export default class App extends React.Component {
 		return (
 			<MuiThemeProvider  muiTheme={muiTheme}>
 				<div className='' style={{background:'#fafafa'}}>
-					<Header />
 					{this.props.children}
 				</div>
 			</MuiThemeProvider>
