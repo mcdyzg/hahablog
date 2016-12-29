@@ -1,0 +1,45 @@
+.Admin{
+	min-width: 768px;
+	position: fixed;
+	top:0;
+	bottom:0;
+	left:0;
+	right: 0;
+	background:#FFF;
+	.btn-wrap{
+		position:fixed;
+		right:20px;
+		bottom:20px;
+		z-index: 2;
+	}
+	.left-wrap{
+		width:50%;
+		float:left;
+		height:100%;
+		color:#EBD1B7;
+		padding:35px 0 0 35px; 
+		background: #36312C;
+		.left-part{
+			background: #36312C;
+			height:100%;
+			border:none;
+			width:100%;
+			color:#EBD1B7;
+			resize:none;
+		}
+	}
+	
+	.right-wrap{
+		padding:35px 0 35px 35px; 
+		width:50%;
+		float:left;
+		height:100%;
+		.right-part{
+			width:100%;
+			background:#FFF;
+			height:100%;
+			overflow: auto;
+		}
+	}
+	
+}

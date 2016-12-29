@@ -1,186 +1,112 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import marked from 'marked'
+
+import AppBar from 'material-ui/AppBar'
+import FlatButton from 'material-ui/FlatButton';
+import Drawer from 'material-ui/Drawer';
+import RaisedButton from 'material-ui/RaisedButton';
+import Chip from 'material-ui/Chip';
+import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import Snackbar from 'material-ui/Snackbar';
-import 'whatwg-fetch'
+import Tooltip from 'rc-tooltip'
+import 'rc-tooltip/assets/bootstrap.css';
+ 
+import Article from '../Article'
+
 
 import './Admin.scss'
-import './MarkDown.scss'
-
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: true,
-  smartLists: true,
-  smartypants: false
-});
 
 export default class Admin extends React.Component {
 	constructor(props,context) {
 		super(props,context)
-		this.state = {
-			content:'',
-			open:false,
-			category:'',
-			title:'',
-			author:'',
-			introduction:'',
-			openMsg:false,
-			errorMsg:''
+		// this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+		this.state={
+			open: false,
+			chipData: [
+		      {key: 0, label: 'Angular'},
+		      {key: 1, label: 'JQuery'},
+		      {key: 2, label: 'Polymer'},
+		      {key: 3, label: 'ReactJS'},
+		    ],
+		    paperDepth:1,
 		}
 	}
 
-	componentDidMount(){
-		
+	handleToggle = () => this.setState({open: !this.state.open})
+
+  	handleClose = () => this.setState({open: false})
+
+	handleRequestDelete = (key) => {
+	    if (key === 3) {
+	      alert('Why would you want to delete React?! :)');
+	      return;
+	    }
+
+	    this.chipData = this.state.chipData;
+	    const chipToDelete = this.chipData.map((chip) => chip.key).indexOf(key);
+	    this.chipData.splice(chipToDelete, 1);
+	    this.setState({chipData: this.chipData});
 	}
 
-	changeWord = (e) => {
-		let t = this;
-		t.setState({
-			content:e.target.value
-		})
+	renderChip(data) {
+	    return (
+	      <Chip
+	      	style={{margin:'4px 5px'}}
+	        key={data.key}
+	        onRequestDelete={() => this.handleRequestDelete(data.key)}
+	      >
+	        {data.label}
+	      </Chip>
+	    );
 	}
-
-	handleOpen = () => this.setState({open: true})
-	
-
-	handleClose = () => this.setState({open: false})
-	
-
-	handleChange = (key, event, index, value) => {
-		let tem = {};
-		tem[key] = value || index;
-		this.setState(tem)
-	}
-
-	submit = () => {
-		const t = this;
-		if(!t.state.title) {
-			t.errorMsg('标题还没写')
-			return;
-		}
-		if(!t.state.author) {
-			t.errorMsg('告诉我作者是谁呀')
-			return;
-		}
-		if(!t.state.category) {
-			t.errorMsg('选个分类吧')
-			return;
-		}
-		if(!t.state.introduction) {
-			t.errorMsg('写个简介吧')
-			return;
-		}
-		if(!t.state.content) {
-			t.errorMsg('写点内容呗')
-			return;
-		}
-		fetch('//localhost:3000/article/insert',{
-			method: 'POST',
-			headers: {
-			  	'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(this.state)
-		}).then(function(resp){
-			console.log(resp)
-		})
-		this.handleClose();
-	}
-
-	errorMsg = (message) => this.setState({openMsg:true,errorMsg:message})
-
-	handleErrorClose = () => this.setState({openMsg: false})
 
 	render() {
 		let t = this;
-		const actions = [
-	      <FlatButton
-	        label="Cancel"
-	        primary={true}
-	        onTouchTap={this.handleClose}
-	      />,
-	      <FlatButton
-	        label="Submit"
-	        primary={true}
-	        onTouchTap={this.submit}
-	      />,
-	    ];
 		return (
-			<div className='Admin'>
-				<div className='left-wrap'>
-					<div className=''>
-						
+			<div className='' style={{minHeight:$(window).height()+'px'}}>
+				<div className='admin-wrap'>
+					<AppBar
+					    title="Admin"
+					    onLeftIconButtonTouchTap={this.handleToggle}
+					    iconElementRight={<FlatButton label="Sign Out" />}
+					/>
+					<div className='adwrap-content'>
+						<div className='adchip-wrap'>
+							<FloatingActionButton 
+								zDepth={1}
+								mini={true} 
+								style={{marginRight:15}}>
+						      	<ContentAdd />
+						    </FloatingActionButton>
+							{this.state.chipData.map(this.renderChip, this)}
+
+						</div>
+						<Paper 
+							onMouseOver={()=>{this.setState({paperDepth:3})}} 
+							onMouseOut={()=>{this.setState({paperDepth:1})}} 
+							className='adwrap-paper' 
+							zDepth={this.state.paperDepth}>
+							<Article />
+						</Paper>
 					</div>
-					<textarea className='left-part' onChange={t.changeWord} />
 				</div>
-				<div className='right-wrap'>
-					<div dangerouslySetInnerHTML={{__html:marked(t.state.content)}} className='right-part'>
-					</div>
-				</div>
-				
-				<div className='btn-wrap'>
-					<FloatingActionButton onTouchTap={this.handleOpen} backgroundColor='#f8bb39'>
-      					<ContentAdd />
-    				</FloatingActionButton>
-				</div>
-				<Dialog
-		          	title="Add new article"
-		          	actions={actions}
-		          	modal={false}
-		          	open={this.state.open}
-		          	onRequestClose={this.handleClose}
+				<Tooltip
+					placement="left"
+					overlay={'add a new article'}>
+					<FloatingActionButton 
+						className='admin-write'
+						zDepth={2}>
+					  	<ContentAdd />
+					</FloatingActionButton>
+				</Tooltip>
+				<Drawer
+		          docked={false}
+		          open={this.state.open}
+		          onRequestChange={(open) => this.setState({open})}
 		        >
-		          	<TextField
-		          		style={{float:'left'}}
-				      	hintText="Hint Text"
-				      	value={this.state.title}
-				      	floatingLabelText="Give me a title"
-				      	onChange={this.handleChange.bind(this,'title')}
-				    />
-				    <TextField
-				    	value={this.state.author}
-				    	style={{marginLeft:50,float:'left'}}
-				      	hintText="Hint Text"
-				      	floatingLabelText="Tell me what's your name"
-				      	onChange={this.handleChange.bind(this,'author')}
-				    /><br />
-				    <SelectField
-				    	style={{marginTop:30,float:'left'}}
-			          	floatingLabelText="Choose a category"
-			          	value={this.state.category}
-			          	onChange={this.handleChange.bind(this,'category')}
-			        >
-			          	<MenuItem value="Web" primaryText="Web" />
-			          	<MenuItem value="Node" primaryText="Node" />
-			          	<MenuItem value="Mongo" primaryText="Mongo" />
-			          	<MenuItem value="React" primaryText="React" />
-			          	<MenuItem value="Phaser" primaryText="Phaser" />
-			        </SelectField>
-				    <TextField
-				    	value={this.state.introduction}
-				    	style={{marginTop:55,marginLeft:50,float:'left'}}
-				      	hintText="Brief Introduction"
-				      	multiLine={true}
-				      	rowsMax={4}
-				      	onChange={this.handleChange.bind(this,'introduction')}
-				    /><br />
-		        </Dialog>
-		        <Snackbar
-		          	open={this.state.openMsg}
-		          	message={this.state.errorMsg}
-		          	autoHideDuration={4000}
-		          	onRequestClose={this.handleErrorClose} />
+		          	<AppBar showMenuIconButton={false} title="Hello" />
+		        </Drawer>
 			</div>
 		);
 	}

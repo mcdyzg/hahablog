@@ -1,0 +1,12 @@
+{
+  "name": "Toast",
+  "_release": "pub/2.0.2",
+  "_resolution": {
+    "type": "tag",
+    "tag": "pub/2.0.2",
+    "commit": "f3da5f3ce17b9656104a75f05777e326af4a49bd"
+  },
+  "_source": "git@gitlab.mizlicai.com:react-camp/Toast.git",
+  "_target": "pub/2.0.2",
+  "_originalSource": "git@gitlab.mizlicai.com:react-camp/Toast.git"
+}
