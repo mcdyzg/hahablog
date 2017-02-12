@@ -19,7 +19,7 @@ const config = {
         port: 8081,                 //设置默认监听端口，如果省略，默认为8080
         historyApiFallback: true,   //在开发单页应用时非常有用，它依赖于HTML5 history API，如果设置为true，所有的跳转将指向index.html
         colors: true,               //设置为true，使终端输出的文件为彩色的
-        hot: true,                  //是否热部署
+        hot: false,                  //是否热部署
         quiet: false                 //让dev server处于静默的状态启动
     },
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {Component} from 'reflux'
 import marked from 'marked'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -10,8 +11,12 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Snackbar from 'material-ui/Snackbar';
-import 'whatwg-fetch'
 
+
+import _map from 'lodash/map'
+import DB from '../../app/db';
+import Action from './action'
+import Store from './store'
 import './Add.scss'
 import './MarkDown.scss'
 
@@ -26,24 +31,18 @@ marked.setOptions({
   smartypants: false
 });
 
-export default class Add extends React.Component {
+export default class Add extends Component {
 	constructor(props,context) {
 		super(props,context)
 		this.state = {
-			content:'',
-			open:false,
-			category:'',
-			title:'',
-			author:'',
-			introduction:'',
-			openMsg:false,
-			errorMsg:''
 		}
+		this.store = Store
+		Action.findCategory()
 	}
 
-	componentDidMount(){
-		
-	}
+	static contextTypes = {
+	    router: React.PropTypes.object,
+	};
 
 	changeWord = (e) => {
 		let t = this;
@@ -70,10 +69,6 @@ export default class Add extends React.Component {
 			t.errorMsg('标题还没写')
 			return;
 		}
-		if(!t.state.author) {
-			t.errorMsg('告诉我作者是谁呀')
-			return;
-		}
 		if(!t.state.category) {
 			t.errorMsg('选个分类吧')
 			return;
@@ -86,24 +81,45 @@ export default class Add extends React.Component {
 			t.errorMsg('写点内容呗')
 			return;
 		}
-		fetch('//localhost:3000/article/insert',{
-			method: 'POST',
-			headers: {
-			  	'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(this.state)
-		}).then(function(resp){
-			console.log(resp)
+		DB.Blog.addArticle({
+			title:t.state.title,
+			category:t.state.category,
+			introduction:t.state.introduction,
+			content:t.state.content,
+		}).then((res)=>{
+			if(res.status === 'success'){
+				this.context.router.push('/admin')
+			}
+		},(err)=>{
+			console.log(err)
 		})
-		this.handleClose();
+
+		// fetch('//localhost:3000/article/insert',{
+		// 	method: 'POST',
+		// 	headers: {
+		// 	  	'Content-Type': 'application/json'
+		// 	},
+		// 	body: JSON.stringify(this.state)
+		// }).then(function(resp){
+		// 	console.log(resp)
+		// })
+		// this.handleClose();
 	}
 
 	errorMsg = (message) => this.setState({openMsg:true,errorMsg:message})
 
 	handleErrorClose = () => this.setState({openMsg: false})
 
+	getCategoryContent(){
+		let temArr = []
+		_map(this.state.categoryList,(item,index)=>{
+			temArr.push(<MenuItem key={index} value={item.category} primaryText={item.category} />)
+		})
+		return temArr
+	}
+
 	render() {
-		let t = this;
+		const t = this;
 		const actions = [
 	      <FlatButton
 	        label="Cancel"
@@ -142,39 +158,30 @@ export default class Add extends React.Component {
 		          	onRequestClose={this.handleClose}
 		        >
 		          	<TextField
-		          		style={{float:'left'}}
 				      	hintText="Hint Text"
 				      	value={this.state.title}
 				      	floatingLabelText="Give me a title"
 				      	onChange={this.handleChange.bind(this,'title')}
 				    />
-				    <TextField
-				    	value={this.state.author}
-				    	style={{marginLeft:50,float:'left'}}
-				      	hintText="Hint Text"
-				      	floatingLabelText="Tell me what's your name"
-				      	onChange={this.handleChange.bind(this,'author')}
-				    /><br />
-				    <SelectField
-				    	style={{marginTop:30,float:'left'}}
-			          	floatingLabelText="Choose a category"
-			          	value={this.state.category}
-			          	onChange={this.handleChange.bind(this,'category')}
-			        >
-			          	<MenuItem value="Web" primaryText="Web" />
-			          	<MenuItem value="Node" primaryText="Node" />
-			          	<MenuItem value="Mongo" primaryText="Mongo" />
-			          	<MenuItem value="React" primaryText="React" />
-			          	<MenuItem value="Phaser" primaryText="Phaser" />
-			        </SelectField>
+				    <br />
 				    <TextField
 				    	value={this.state.introduction}
-				    	style={{marginTop:55,marginLeft:50,float:'left'}}
 				      	hintText="Brief Introduction"
 				      	multiLine={true}
 				      	rowsMax={4}
 				      	onChange={this.handleChange.bind(this,'introduction')}
-				    /><br />
+				    />
+				    <br />
+				    <SelectField
+			          	floatingLabelText="Choose a category"
+			          	value={this.state.category}
+			          	onChange={this.handleChange.bind(this,'category')}
+			        >
+			        {
+			        	t.getCategoryContent()
+			        }
+			        </SelectField>
+			        <br />
 		        </Dialog>
 		        <Snackbar
 		          	open={this.state.openMsg}

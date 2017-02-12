@@ -15,7 +15,7 @@ const config = {
     output: {
         path: __dirname + '/dist',
         filename: '[name].min.js',
-        // publicPath:'www.mizlicai.com'         // 启用publicPath,打包出的js、css和img都会添加此前缀，方便打包后将资源传到cdn时，免去修改html资源路径的麻烦。
+        // publicPath:'http://139.224.128.149:3002'         // 启用publicPath,打包出的js、css和img都会添加此前缀，方便打包后将资源传到cdn时，免去修改html资源路径的麻烦。
     },
 
     module: {
@@ -63,7 +63,7 @@ const config = {
             verbose: true,
             dry: false
         }),
-        new webpack.BannerPlugin("Copyright Mizlc inc."),   //打包文件抬头
+        // new webpack.BannerPlugin("Copyright Mizlc inc."),   //打包文件抬头
         //new webpack.optimize.OccurenceOrderPlugin(),        //为组件分配ID，通过这个插件webpack可以分析和优先考虑使用最多的模块，并为它们分配最小的ID
         new webpack.optimize.UglifyJsPlugin({               //压缩JS代码
             compress: {
@@ -72,9 +72,9 @@ const config = {
         }),
         //new ExtractTextPlugin("app.min.css"),           //是否分离CSS和JS文件("[name]-[hash].css"),如果分离，打出单独的app.min.css包，并且会在模板html的头部插入linkl标签,并且打包出的css会添加publicPath的头前缀。
         new HtmlWebpackPlugin({                         //生成模板文件
-            template: __dirname + "/index.tpl.html",
+            template: __dirname + "/test/index.tpl.html",
             filename: 'index.html',
-            chunks: ['app', 'vendor'],
+            chunks: ['vendor', 'app'],
         }),
         // new HtmlWebpackPlugin({                      //如果要多个入口js打成多个包，并且需要生成多个html文件，复制本段即可。
         //     template: __dirname + "/index.tpl.html",

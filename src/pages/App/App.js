@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Header from '../Header'
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import './App.scss'
@@ -28,7 +27,7 @@ export default class App extends React.Component {
 		return (
 			<MuiThemeProvider  muiTheme={muiTheme}>
 				<Scrollbars autoHide style={{ width: $(window).width(), height: $(window).height() }}>
-		        	<div className='app-wrap' style={{background:'#fafafa'}}>
+		        	<div className='app-wrap' style={{background:'#fafafa',minHeight:$(window).height()+'px'}}>
 						{this.props.children}
 					</div>
 		      	</Scrollbars>

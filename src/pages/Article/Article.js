@@ -1,126 +1,47 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Avatar from 'material-ui/Avatar';
+import Reflux from 'reflux'
 
-import './Article.scss'
+import Action from './action'
+import Store from './Store'
+import Header from '../../modules/Header'
+import Article from '../../modules/Article'
+import DB from '../../app/db'
 
-export default class Article extends React.Component {
+export default class ArticlePage extends Reflux.Component {
 	constructor(props,context) {
 		super(props,context)
 		// this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+		this.state = {};
+		this.store = Store
+		Action.findArticle()
 	}
 
 	componentDidMount(){
 		
 	}
 
+	chooseCategory = (category) =>{
+		DB.Blog.findSomeArticle({
+			category:category,
+		}).then((res)=>{
+			if(res.status === 'success'){
+				this.setState({
+					articleList:res.data
+				})
+			}
+		})
+	}
+
 	render() {
-		let t = this;
+		const t = this;
 		return (
-			<div className='Article'>
-				<div className='a-head'>
-					Update Lately
-				</div>
-				<div className='a-body'>
-					<div className='a-content'>
-						<div className='a-item flex-h jc-start'>
-							<div className='left-list'>
-								<Avatar
-						          	color='#FFF'
-						          	backgroundColor='#26A69A'
-						          	size={56}
-						          	style={{width:'4.5rem',height:'4.5rem',fontSize:'40px'}}
-						        >
-						          A
-						        </Avatar>
-							</div>
-							<div className='right-content'>
-								<div className='rc-title'>
-									Design is EveryThing
-								</div>
-								<div className='rc-time'>
-									2016.10.28 | mcdyzg
-								</div>
-								<div className='rc-content'>
-									dddddddddddddddddddddddddd
-								</div>
-							</div>
-						</div>
-
-						<div className='a-item flex-h jc-start'>
-							<div className='left-list'>
-								<Avatar
-						          	color='#FFF'
-						          	backgroundColor='#26A69A'
-						          	size={56}
-						          	style={{width:'4.5rem',height:'4.5rem',fontSize:'40px'}}
-						        >
-						          A
-						        </Avatar>
-							</div>
-							<div className='right-content'>
-								<div className='rc-title'>
-									Design is EveryThing
-								</div>
-								<div className='rc-time'>
-									2016.10.28 | mcdyzg
-								</div>
-								<div className='rc-content'>
-									dddddddddddddddddddddddddd
-								</div>
-							</div>
-						</div>
-
-						<div className='a-item flex-h jc-start'>
-							<div className='left-list'>
-								<Avatar
-						          	color='#FFF'
-						          	backgroundColor='#26A69A'
-						          	size={56}
-						          	style={{width:'4.5rem',height:'4.5rem',fontSize:'40px'}}
-						        >
-						          A
-						        </Avatar>
-							</div>
-							<div className='right-content'>
-								<div className='rc-title'>
-									Design is EveryThing
-								</div>
-								<div className='rc-time'>
-									2016.10.28 | mcdyzg
-								</div>
-								<div className='rc-content'>
-									dddddddddddddddddddddddddd
-								</div>
-							</div>
-						</div>
-
-						<div className='a-item flex-h jc-start'>
-							<div className='left-list'>
-								<Avatar
-						          	color='#FFF'
-						          	backgroundColor='#26A69A'
-						          	size={56}
-						          	style={{width:'4.5rem',height:'4.5rem',fontSize:'40px'}}
-						        >
-						          A
-						        </Avatar>
-							</div>
-							<div className='right-content'>
-								<div className='rc-title'>
-									Design is EveryThing
-								</div>
-								<div className='rc-time'>
-									2016.10.28 | mcdyzg
-								</div>
-								<div className='rc-content'>
-									dddddddddddddddddddddddddd
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+			<div className=''>
+				<Header onChoose={t.chooseCategory} />
+				<div style={{height:'64px'}}></div>
+				<Article data={t.state.articleList} />
 			</div>
+			
 		);
 	}
 }

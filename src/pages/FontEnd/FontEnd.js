@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Header from '../Header'
 
 import './FontEnd.scss'
 
@@ -18,8 +17,6 @@ export default class FontEnd extends React.Component {
 	render() {
 		return (
 			<div className='' style={{background:'#fafafa'}}>
-				<Header />
-				<div style={{height:'64px'}}></div>
 				{this.props.children}
 			</div>
 		);
