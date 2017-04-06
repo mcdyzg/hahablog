@@ -37,7 +37,7 @@ export default class Login extends React.Component {
 	render() {
 		let t = this;
 		return (
-			<div className='login flex-h ai-center' style={{minHeight:$(window).height()+'px'}}>
+			<div className='login flex-h ai-center' style={{minHeight:window.innerHeight+'px'}}>
 				<div className='login-wrap flex-v jc-center ai-center'>
 					<TextField
 				      hintText="please enter your name"

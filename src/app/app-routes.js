@@ -26,5 +26,6 @@ const AppRoutes = (
 	)
 
 export default AppRoutes;
+		// <Route path='register' component={Register} />
 // <IndexRoute component={Lesson}/>
 		// <Route path='lesson' component={Lesson}/>

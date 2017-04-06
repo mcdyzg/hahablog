@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
+import { Link } from 'react-router'
+ 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
@@ -89,7 +90,7 @@ export default class Register extends React.Component {
 	render() {
 		let t = this;
 		return (
-			<div className='login flex-h ai-center' style={{minHeight:$(window).height()+'px'}}>
+			<div className='login flex-h ai-center' style={{minHeight:window.innerHeight+'px'}}>
 				<div className='login-wrap flex-v jc-center ai-center'>
 					<TextField
 						onChange={(e,name)=>this.setState({name})}
@@ -112,7 +113,13 @@ export default class Register extends React.Component {
 				    	onTouchTap={this.handleTouchTap}
 				    	label="REGISTER" 
 				    	primary={true} 
-				    	style={{width:257,height:40,margin:'40px 0 50px'}} />
+				    	style={{width:257,height:40,margin:'40px 0 20px'}} />
+				    <Link to='/login'>
+				    	<RaisedButton 
+					    	label="LOGIN" 
+					    	primary={true} 
+					    	style={{width:257,height:40,margin:'0px 0 50px'}} />
+					</Link>
 				</div>
 				<Snackbar
 		          open={this.state.open}

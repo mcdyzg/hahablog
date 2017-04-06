@@ -33,7 +33,7 @@ export default class GameList extends React.Component {
 	render() {
 		let t = this;
 		return (
-			<div className='' style={{minHeight:$(window).height()+'px'}}>
+			<div className='' style={{minHeight:window.innerHeight+'px'}}>
 				<Header  onChoose={t.chooseCategory} />
 				<div style={{height:'64px'}}></div>
 				

@@ -158,7 +158,7 @@ export default class Add extends Component {
 		          	onRequestClose={this.handleClose}
 		        >
 		          	<TextField
-				      	hintText="Hint Text"
+				      	hintText="添加标题"
 				      	value={this.state.title}
 				      	floatingLabelText="Give me a title"
 				      	onChange={this.handleChange.bind(this,'title')}
@@ -166,7 +166,8 @@ export default class Add extends Component {
 				    <br />
 				    <TextField
 				    	value={this.state.introduction}
-				      	hintText="Brief Introduction"
+				      	hintText="添加简介"
+				      	floatingLabelText="Brief Introduction"
 				      	multiLine={true}
 				      	rowsMax={4}
 				      	onChange={this.handleChange.bind(this,'introduction')}

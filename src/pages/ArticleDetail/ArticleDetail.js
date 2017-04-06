@@ -4,6 +4,7 @@ import Reflux from 'reflux'
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import Moment from 'moment'
+import marked from 'marked'
 
 import Action from './action'
 import Store from './Store'
@@ -11,6 +12,18 @@ import Header from '../../modules/Header'
 import Article from '../../modules/Article'
 import DB from '../../app/db'
 import './ArticleDetail.scss'
+import './MarkDown.scss'
+
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: true,
+  smartLists: true,
+  smartypants: false
+});
 
 export default class ArticleDetail extends Reflux.Component {
 	constructor(props,context) {
@@ -54,7 +67,9 @@ export default class ArticleDetail extends Reflux.Component {
 						</div>
 						<Divider />
 						<div className='ad-content'>
-							{t.state.articleDetail.length !== 0?t.state.articleDetail[0].content:'~~'}
+							{t.state.articleDetail.length !== 0? 
+								<div dangerouslySetInnerHTML={{__html:marked(t.state.articleDetail[0].content)}} className=''>
+								</div>:'~~'}
 						</div>
 						
 					</Paper>
@@ -66,4 +81,5 @@ export default class ArticleDetail extends Reflux.Component {
 	}
 }
 
-
+// <div dangerouslySetInnerHTML={{__html:marked(t.state.content)}} className='right-part'>
+					// </div>

@@ -11,11 +11,14 @@ import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Tooltip from 'rc-tooltip'
-import 'rc-tooltip/assets/bootstrap.css';
+// import Tooltip from 'rc-tooltip'
+// import 'rc-tooltip/assets/bootstrap.css';
 import Dialog from 'material-ui/Dialog';
+import {List, ListItem} from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
+import ActionLabel from 'material-ui/svg-icons/action/label';
  
 import Article from '../../modules/Article'
 import Store from './store';
@@ -35,6 +38,7 @@ export default class Admin extends Component {
 		this.store = Store;
 		Action.findCategory()
 		Action.findArticle()
+		Action.getName()
 	}
 
 	handleToggle = () => this.setState({open: !this.state.open})
@@ -46,7 +50,7 @@ export default class Admin extends Component {
 			category:value
 		}).then((res)=>{
 			if(res.status === 'success'){
-				Action.findCategory();
+				setTimeout(Action.findCategory());
 			}
 		})
 	    // if (key === 3) {
@@ -67,6 +71,7 @@ export default class Admin extends Component {
 	handleSearch(value){
 		const t = this;
 		DB.Blog.findSomeArticle({
+			type:'dashboard',
 			category:value,
 		}).then((res)=>{
 			if(res.status === 'success'){
@@ -99,9 +104,9 @@ export default class Admin extends Component {
 				t.setState({
 					add:''
 				})
-				Action.findCategory()
-			}
-			if(res.status === 'error'){
+				setTimeout(Action.findCategory())
+				// Action.findCategory()
+			}else{
 				t.setState({
 					msg:res.msg,
 					openSnack:true
@@ -110,15 +115,22 @@ export default class Admin extends Component {
 		})
 	}
 
+	signout(){
+		DB.Blog.signout({})
+	}
+
 	render() {
 		let t = this;
 		return (
-			<div className='' style={{minHeight:$(window).height()+'px'}}>
+			<div className='' style={{minHeight:window.innerHeight+'px'}}>
 				<div className='admin-wrap'>
 					<AppBar
-					    title="Admin"
+					    title={t.state.userName}
 					    onLeftIconButtonTouchTap={this.handleToggle}
-					    iconElementRight={<FlatButton label="Sign Out" />}
+					    iconElementRight={<FlatButton
+					    	onTouchTap={this.signout}
+					    	 label="Sign Out" />
+					    	}
 					/>
 					<div className='adwrap-content'>
 						<div className='adchip-wrap'>
@@ -139,9 +151,7 @@ export default class Admin extends Component {
 						</Paper>
 					</div>
 				</div>
-				<Tooltip
-					placement="left"
-					overlay={'add a new article'}>
+				
 					<Link to="/add">
 						<FloatingActionButton 
 							className='admin-write'
@@ -149,13 +159,27 @@ export default class Admin extends Component {
 						  	<ContentAdd />
 						</FloatingActionButton>
 					</Link>
-				</Tooltip>
+				
 				<Drawer
 		          docked={false}
 		          open={this.state.open}
 		          onRequestChange={(open) => this.setState({open})}
 		        >
 		          	<AppBar showMenuIconButton={false} title="Hello" />
+
+					<List>
+					      <Subheader>Links</Subheader>
+					      <a href='https://github.com/mcdyzg'>
+					      <ListItem
+					        primaryText="Github"
+					        leftIcon={<ActionLabel />}
+					      />
+					      </a>
+					      <ListItem
+					        primaryText="Thank You"
+					        leftIcon={<ActionLabel />}
+					      />
+					</List>
 		        </Drawer>
 		        <Dialog
 		          	title="添加一个分类吧"
@@ -185,4 +209,7 @@ export default class Admin extends Component {
 	}
 }
 
-
+// <Tooltip
+// 	placement="left"
+// 	overlay={'add a new article'}>
+// </Tooltip>

@@ -15,12 +15,25 @@ export default createStore({
             add:'',
             chipData: [],
             articleList:[],
+            userName:'',
         };
+    },
+
+    onGetName(){
+        const t = this;
+        DB.Blog.getName().then((res)=>{
+            if(res.status === 'success') {
+                t.state.userName = res.data.name;
+                t.updateComponent();
+            }
+        });
     },
 
     onFindCategory(){
         const t = this;
-        DB.Blog.findCategory({}).then((res)=>{
+        DB.Blog.findCategory({
+            type:'dashboard'
+        }).then((res)=>{
             if(res.status === 'success') {
                 t.state.chipData = res.data
                 t.updateComponent();
@@ -30,7 +43,9 @@ export default createStore({
 
     findArticle(){
         const t = this;
-        DB.Blog.findArticle({}).then((res)=>{
+        DB.Blog.findArticle({
+            type:'dashboard'
+        }).then((res)=>{
             if(res.status === 'success') {
                 t.state.articleList = res.data
                 t.updateComponent();

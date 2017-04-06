@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Link } from 'react-router'
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -85,7 +86,7 @@ export default class Login extends React.Component {
 	render() {
 		let t = this;
 		return (
-			<div className='login flex-h ai-center' style={{minHeight:$(window).height()+'px'}}>
+			<div className='login flex-h ai-center' style={{minHeight:window.innerHeight+'px'}}>
 				<div className='login-wrap flex-v jc-center ai-center'>
 					<TextField
 				      hintText="please enter your name"
@@ -102,7 +103,13 @@ export default class Login extends React.Component {
 				    	onTouchTap={this.handleTouchTap}
 				    	label="LOGIN" 
 				    	primary={true} 
-				    	style={{width:257,height:40,margin:'40px 0 50px'}} />
+				    	style={{width:257,height:40,margin:'40px 0 20px'}} />
+				    <Link to="/register">
+					    <RaisedButton 
+					    	label="REGISTER" 
+					    	primary={true} 
+					    	style={{width:257,height:40,margin:'0 50px'}} />
+				    </Link>
 				</div>
 				<Snackbar
 		          open={this.state.open}

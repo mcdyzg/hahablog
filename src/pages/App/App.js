@@ -26,8 +26,8 @@ export default class App extends React.Component {
 	render() {
 		return (
 			<MuiThemeProvider  muiTheme={muiTheme}>
-				<Scrollbars autoHide style={{ width: $(window).width(), height: $(window).height() }}>
-		        	<div className='app-wrap' style={{background:'#fafafa',minHeight:$(window).height()+'px'}}>
+				<Scrollbars autoHide style={{ width: window.innerWidth, height: window.innerHeight }}>
+		        	<div className='app-wrap' style={{background:'#fafafa',minHeight:window.innerHeight+'px'}}>
 						{this.props.children}
 					</div>
 		      	</Scrollbars>

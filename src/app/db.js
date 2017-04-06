@@ -5,13 +5,14 @@ import { browserHistory } from 'react-router'
 // 开发环境
 if (__LOCAL__) {   
     var urlPrefix= 
-   	'//localhost:3002/API/';
+   	'/API/';
 }
 
 // 生产环境
 if (__PRO__) {  
     var urlPrefix = 
-    '//139.224.128.149:3002/API/';
+    '/API/';
+    // '//139.224.128.149:3002/API/';
 }
 
 DBF.set('urlPrefix', urlPrefix);
@@ -21,59 +22,55 @@ DBF.set('defaultParsePesp', (resp)=>{
 		browserHistory.push('/login')
 	}
 	if(resp.status !== 'success'){
-		alert(resp.msg)
+		// alert(resp.msg)
 	}
     return resp;
 });
 
 DBF.create('Blog', {
+	getName:{
+		url       			:'getName',
+		type      			:'POST',
+	},
 	signin:{
 		url       			:'signin',
 		type      			:'POST',
-		credentials			:'include',
-		contentType			:'application/json',
 	},
 	signup:{
 		url       			:'signup',
 		type      			:'POST',
-		credentials			:'include',
-		contentType			:'application/json',
+	},
+	signout:{
+		url       			:'signout',
+		type      			:'POST',
 	},
 	addArticle:{
 		url       			:'addArticle',
 		type      			:'POST',
-		credentials			:'include',
-		contentType			:'application/json',
 	},
 	findCategory:{
 		url       			:'findCategory',
 		type      			:'POST',
-		credentials			:'include',
-		contentType			:'application/json',
 	},
 	addCategory:{
 		url       			:'addCategory',
 		type      			:'POST',
-		credentials			:'include',
-		contentType			:'application/json',
 	},
 	removeCategory:{
 		url       			:'removeCategory',
 		type      			:'POST',
-		credentials			:'include',
-		contentType			:'application/json',
+	},
+	findMyArticle:{
+		url       			:'findMyArticle',
+		type      			:'POST',
 	},
 	findArticle:{
 		url       			:'findArticle',
 		type      			:'POST',
-		credentials			:'include',
-		contentType			:'application/json',
 	},
 	findSomeArticle:{
 		url       			:'findSomeArticle',
 		type      			:'POST',
-		credentials			:'include',
-		contentType			:'application/json',
 	},
 });
 
