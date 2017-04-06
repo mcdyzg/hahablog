@@ -1,5 +1,5 @@
 {
-  "name": "react-es6-demo",
+  "name": "hahablog",
   "version": "1.0.0",
   "description": "",
   "author": "mcdyzg",
@@ -60,5 +60,5 @@
     "type": "git",
     "url": ".."
   },
-  "author": "Eugene"
+  "author": "mcdyzg"
 }
